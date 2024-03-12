@@ -121,12 +121,12 @@ while True:
     # *********UNCOMMENT NEXT 7 LINES (UP TO AND INCLUDING: 'shutil.copy2('./Downloads Simplified.exe', startup_path)') FOR CREATING EXE
     # nesting itself in startup directory
     home_path = str(Path.home())
-    default_startup = 'AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup\organize.pyw'
+    default_startup = 'AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup\DownloadsSimplified.pyw'
     startup_path = join(home_path, default_startup)
     
     # nest script in startup
     if not exists(startup_path):
-        shutil.copy2('./organize.pyw', startup_path)
+        shutil.copy2('./DownloadsSimplified.pyw', startup_path)
 
     # if we have already created the environment variable in the user's system, simply set downloads_path to that directory, otherwise find the directory
     if "DOWNLOADS_PATH" in os.environ:
