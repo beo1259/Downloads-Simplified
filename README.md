@@ -31,17 +31,26 @@ Execute this folder to begin sorting your downloads. Be sure to check the next s
 ##### The program sorts your downloads into 10 different folders:
 
 **_FOLDERS**: Windows File Folder Types. 
+
 **Apps**: Executable files like setups/installers.
+
 **Audio**: Audio type files.
+
 **Images**: Image type files.
-**Pdf**: PDF type files.                                
+
+**Pdf**: PDF type files.                
+
 **Text**: Text/Code type files.
+
 **Video**: Video type files.
+
 **Work**: All offic type files.
+
 **Zipped**: Zipped/rar/tar type files.
+
 **Misc**: Any file that didn't qualify as any of the prior types.
 
-**This is what your Downloads folder will look like! So organized!**
+### **This is what your Downloads folder will look like! So organized!**
 
 <img src="./Images/Demo.png" alt="drawing" width="100"/>
 
