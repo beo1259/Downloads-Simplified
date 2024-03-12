@@ -1,15 +1,19 @@
 # Downloads Simplified
 
+#### DISCLAIMER: You must have [Python](https://www.python.org/downloads/release/python-3100/) installed on your computer
+
 The downloads directory is usually the most cluttered directory on most peoples computers, and this becomes annoying and unmagable whenever you are looking an older file, for which you know the type, but can't find it buried under 100s of other random files.
 
 This program sorts your downloads directory on **Windows** into easily managable files!
 
 # How to start sorting your downloads
 
-In the ***output*** folder, there is a file **Downloads Simplified.exe**
-Execute this folder to begin sorting your downloads. Be sure to check the next steps so that Windows Defender doesn't remove it.
+Once it is installed, you can simply right click 'organize.pyw' > 'Open With' > *and just select python*
 
-#### ***WARNING:*** 
+__Now your files are organized!__
+
+
+<!-- #### ***WARNING:*** 
 **This folder is automatically recognized as a Trojan virus by windows defender, and a few other programs.** This program is ***not*** a virus, it was compiled with the [auto-py-to-exe](https://pypi.org/project/auto-py-to-exe/) tool, this is a commmon issue with this program *(you can scan the .exe with [virustotal](https://www.virustotal.com/gui/home/upload) to see that it is only detected by a few antivirus softwares)*.
 
 #### To stop the detection follow these steps:
@@ -24,7 +28,7 @@ Execute this folder to begin sorting your downloads. Be sure to check the next s
 
 ***If the program is not running (which you can check in task manager), and is not in your startup folder or the location you downlaoded it, Windows Defender has already deleted it. Simply run the program and repeat the steps quicker.***
 
-**That's it! Your downloads will now be organized!**
+**That's it! Your downloads will now be organized!** -->
 
 # How are your files organized?
 
@@ -48,7 +52,10 @@ Execute this folder to begin sorting your downloads. Be sure to check the next s
 
 **Zipped**: Zipped/rar/tar type files.
 
-**Misc**: Any file that didn't qualify as any of the prior types.
+**Misc**: Any file that didn't qualify as any of the prior types, or files that you don't want to be sorted.
+
+#### The program also goes through these folder and moves any files that dont belong in that folder to the correct one. 
+*If you __don't__ want a file/folder to be automatically sorted into the correct folder, put it in __Misc__*:
 
 ### **This is what your Downloads folder will look like! So organized!**
 

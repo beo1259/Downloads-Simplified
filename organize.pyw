@@ -1,3 +1,4 @@
+import os
 from os import listdir, getenv, mkdir, walk
 from os.path import isfile, join, exists, isdir, basename, islink, getsize
 import shutil
@@ -5,6 +6,8 @@ import mimetypes
 from time import sleep
 from pathlib import Path
 from datetime import datetime
+import string
+import winreg
 
 # to autoscan each organized folder and move any files that aren't where they should be 
 # (this would occur if the user places something in the wrong folder manually)
@@ -63,21 +66,80 @@ def moveFolder(folder, parent_path):
     
         shutil.move(folder, modified_folder_name)
 
+
+# this is the deafult windows downloads direct
+def defaultDownloads():
+    return os.path.join(os.path.expanduser('~'), 'Downloads')
+
+# on windows we can get the downloads folder easily
+def getDownloadsFolderWindows():
+    key = winreg.OpenKey(winreg.HKEY_CURRENT_USER, r'SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders')
+    downloads_path, _ = winreg.QueryValueEx(key, '{374DE290-123F-4565-9164-39C4925E467B}')
+    downloads_path = os.path.expandvars(downloads_path)  # expand any environment variables
+    return downloads_path
+
+if os.name == 'nt':  # if running on Windows
+    downloads_path = getDownloadsFolderWindows()
+    os.environ["DOWNLOADS_PATH"] = downloads_path
+
+
+# if it isnt in the deafult directory and the user isn't on windows
+def findDownloads(drives):
+    for drive in drives:
+        for root, dirs, files in os.walk(drive, topdown=True): 
+            if 'Downloads' in dirs:
+                downloads_path = os.path.join(root, 'Downloads')
+                os.environ["DOWNLOADS_PATH"] = downloads_path
+                return downloads_path  
+    return None
+
+# sort drives from largest to smallest (size)
+def sortDrives(drive):
+    valid_drives = []
+    for each_drive in drive:
+        if os.path.exists(each_drive+':\\'):
+            valid_drives.append(each_drive+":\\")
+    
+    size_dict = {}
+
+    for drive in valid_drives:
+        du_tuple = shutil.disk_usage(drive)
+        size_dict[drive] = du_tuple.used
+
+    sorted_sizes = dict(sorted(size_dict.items(), key=lambda item: item[1], reverse=True))
+    sorted_drive_arr = []
+
+    for key in sorted_sizes.keys():
+        sorted_drive_arr.append(key)
+
+    return sorted_drive_arr
+
+# main loop
 while True:
 
     #**************************************************************************************************************************
     # *********UNCOMMENT NEXT 7 LINES (UP TO AND INCLUDING: 'shutil.copy2('./Downloads Simplified.exe', startup_path)') FOR CREATING EXE
     # nesting itself in startup directory
     home_path = str(Path.home())
-    default_startup = 'AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup\Downloads Simplified.exe'
+    default_startup = 'AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup\organize.pyw'
     startup_path = join(home_path, default_startup)
     
     # nest script in startup
     if not exists(startup_path):
-        shutil.copy2('./Downloads Simplified.exe', startup_path)
+        shutil.copy2('./organize.pyw', startup_path)
 
-    # default file path for downloads
-    downloads_path = str(Path.home() / "Downloads")
+    # if we have already created the environment variable in the user's system, simply set downloads_path to that directory, otherwise find the directory
+    if "DOWNLOADS_PATH" in os.environ:
+        downloads_path = str(os.environ.get("DOWNLOADS_PATH"))
+    else:
+        downloads_path = str(getDownloadsFolderWindows())
+        if os.path.exists(downloads_path):
+            os.environ["DOWNLOADSPATH"] = downloads_path
+        else:
+            # get drives and sort them from largest to smallest (typically the larger drive will contain downloads)
+            drive = string.ascii_uppercase
+            sorted_drives = sortDrives(drive)
+            findDownloads(sorted_drives)
 
     # init the default paths for sorting and craete the folder if it does not exist
     audio_path = join(downloads_path, 'Audio')
@@ -120,8 +182,10 @@ while True:
                         'application/vnd.ms-powerpoint.slideshow.macroEnabled.12'
                         ]
 
+    # paths for each organized folder
     paths = [audio_path, video_path, image_path, zip_path, text_path, app_path, misc_path, pdf_path, work_path, folders_path]
     
+    # each folder's mimetype
     paths_and_their_mimetypes = {
         audio_path:'audio',
         video_path:'video',
@@ -133,6 +197,7 @@ while True:
         work_path:office_mimetypes,
     }
 
+    # create directories if they don't exist
     for path in paths:
         if not exists(path):
             mkdir(path)
@@ -205,4 +270,4 @@ while True:
         if source_folder not in paths:
             moveFolder(source_folder, folders_path)
 
-    sleep(21600)
+    sleep(21600) # check to sort again 6 hours from now
