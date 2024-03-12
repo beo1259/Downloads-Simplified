@@ -17,19 +17,10 @@ def moveFile(file, parent_path):
 
     if not exists(attempt_insertion):
         shutil.move(file, parent_path)
-        
-        # # write move result to output file
-        # write_output = open(sort_output, "a")
-        # write_output.write(f'File moved from {downloads_path} to: {attempt_insertion} on {str(datetime.now().strftime("%Y-%m-%d"))}\n\n')
-        # write_output.close()
+
     else:
         modified = f'{join(parent_path, file_stem)} - {datetime.now().strftime("%Y-%m-%d %H%M%S")}{file_ext}'
         shutil.move(source, modified)
-        
-        # # write move result to output file
-        # write_output = open(sort_output, "a")
-        # write_output.write(f'File moved from {downloads_path} to: {modified} on {str(datetime.now().strftime("%Y-&m-%d"))}\n\n')
-        # write_output.close()
 
 
 def moveFolder(folder, parent_path):
@@ -38,21 +29,12 @@ def moveFolder(folder, parent_path):
 
     if not exists(attempt_insertion):
         shutil.move(folder, parent_folder_sort)
-        
-        # # write move result to output file
-        # write_output = open(sort_output, "a")
-        # write_output.write(f'Folder moved from {downloads_path} to: {attempt_insertion} on {str(datetime.now().strftime("%Y-%m-%d"))}\n\n')
-        # write_output.close()
+
     else:
         timestamp = datetime.now().strftime("%Y-%m-%d %H%M%S")
         modified_folder_name = f'{attempt_insertion} - {timestamp}'
     
         shutil.move(folder, modified_folder_name)
-        
-        # # write move result to output file
-        # write_output = open(sort_output, "a")
-        # write_output.write(f'Folder moved from {downloads_path} to: {modified_folder_name} on {str(datetime.now().strftime("%Y-&m-%d"))}\n\n')
-        # write_output.close()
 
 def get_size(start_path):
     total_size = 0
@@ -76,36 +58,6 @@ while True:
 
     # default file path for downloads
     downloads_path = str(Path.home() / "Downloads")
-    
-    # for if user has their desktop in their onedrive
-    # onedrive_path = getenv('OneDrive')
-    
-    # reg_desktop_size = 0
-    # onedrive_desktop_size = 0
-    
-    # if exists(str(Path.home() / "Desktop")):
-    #     reg_desktop_size = getsize(str(Path.home() / "Desktop"))
-    #     print(reg_desktop_size)
-    # if exists(str(Path.home() / "OneDrive/Desktop")):
-    #     onedrive_desktop_size = getsize(str(Path.home() / "OneDrive/Desktop"))
-    #     print(onedrive_desktop_size)
-    
-    # if (reg_desktop_size and onedrive_desktop_size) and (onedrive_desktop_size > reg_desktop_size):
-    #     desktop_path = str(Path.home() / "OneDrive/Desktop")
-    # elif (reg_desktop_size and onedrive_desktop_size) and (onedrive_desktop_size < reg_desktop_size):
-    #     desktop_path = str(Path.home() / "Desktop")
-        
-    # print(desktop_path)
-
-    # # default file path for dekstop
-    # sort_output = join(desktop_path, 'Downloads-Simplified-Output.txt')
-    
-    
-    # if not exists(sort_output):
-    #     print('true')
-    #     with open(sort_output, 'w') as file:
-    #         file.close()
-    #         pass
 
     # init the default paths for sorting and craete the folder if it does not exist
     audio_path = join(downloads_path, 'Audio')
@@ -114,14 +66,13 @@ while True:
     zip_path = join(downloads_path, 'Zipped')
     text_path = join(downloads_path, 'Text')
     app_path = join(downloads_path, 'Apps')
-    font_path = join(downloads_path, 'Fonts')
     pdf_path = join(downloads_path, 'Pdf')
     misc_path = join(downloads_path, 'Misc')
     work_path = join(downloads_path, 'Work')
 
     folders_path = join(downloads_path, '_FOLDERS')
 
-    paths = [audio_path, video_path, image_path, zip_path, text_path, app_path, font_path, misc_path, pdf_path, work_path, folders_path]
+    paths = [audio_path, video_path, image_path, zip_path, text_path, app_path, misc_path, pdf_path, work_path, folders_path]
 
     for path in paths:
         if not exists(path):
@@ -178,10 +129,6 @@ while True:
 
         elif file_type and file_type.startswith('audio'):
             moveFile(source, audio_path)
-            continue
-
-        elif file_type and file_type.startswith('font'):
-            moveFile(source, font_path)
             continue
 
         elif file_type and file_type.startswith('image'):
