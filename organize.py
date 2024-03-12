@@ -1,5 +1,5 @@
-from os import listdir, getenv, mkdir
-from os.path import isfile, join, exists, isdir, basename
+from os import listdir, getenv, mkdir, walk
+from os.path import isfile, join, exists, isdir, basename, islink, getsize
 import shutil
 import mimetypes
 from time import sleep
@@ -54,26 +54,49 @@ def moveFolder(folder, parent_path):
         # write_output.write(f'Folder moved from {downloads_path} to: {modified_folder_name} on {str(datetime.now().strftime("%Y-&m-%d"))}\n\n')
         # write_output.close()
 
+def get_size(start_path):
+    total_size = 0
+    for dirpath, dirnames, filenames in walk(start_path):
+        for f in filenames:
+            fp = join(dirpath, f)
+            # skip if it is symbolic link
+            if not islink(fp):
+                total_size += getsize(fp)
+
+    return total_size
 
 while True:
 
     # C:\Users\oneil\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup
     home_path = str(Path.home())
-    startup_path = join(home_path, 'AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup\organize.pyw')
+    # startup_path = join(home_path, 'AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup\Downloads Simplified.exe')
     
-    # nest script in startup
-    if not exists(startup_path):
-        shutil.copy2('./organize.pyw', startup_path)
+    # # nest script in startup
+    # if not exists(startup_path):
+    #     shutil.copy2('./Downloads Simplified.exe', startup_path)
 
     # default file path for downloads
     downloads_path = str(Path.home() / "Downloads")
     
     # for if user has their desktop in their onedrive
-    onedrive_path = getenv('OneDrive')
-    if onedrive_path:
-        desktop_path = str(Path.home() / "OneDrive/Desktop")
-    else:
-        desktop_path = str(Path.home() / "Desktop")
+    # onedrive_path = getenv('OneDrive')
+    
+    # reg_desktop_size = 0
+    # onedrive_desktop_size = 0
+    
+    # if exists(str(Path.home() / "Desktop")):
+    #     reg_desktop_size = getsize(str(Path.home() / "Desktop"))
+    #     print(reg_desktop_size)
+    # if exists(str(Path.home() / "OneDrive/Desktop")):
+    #     onedrive_desktop_size = getsize(str(Path.home() / "OneDrive/Desktop"))
+    #     print(onedrive_desktop_size)
+    
+    # if (reg_desktop_size and onedrive_desktop_size) and (onedrive_desktop_size > reg_desktop_size):
+    #     desktop_path = str(Path.home() / "OneDrive/Desktop")
+    # elif (reg_desktop_size and onedrive_desktop_size) and (onedrive_desktop_size < reg_desktop_size):
+    #     desktop_path = str(Path.home() / "Desktop")
+        
+    # print(desktop_path)
 
     # # default file path for dekstop
     # sort_output = join(desktop_path, 'Downloads-Simplified-Output.txt')
@@ -142,7 +165,6 @@ while True:
 
         file_type = mimetypes.guess_type(file)[0] # get the mime type of the current file
 
-        # moving each file to its corrcet directory
         if file_type and file_type in office_mimetypes:
             moveFile(source, work_path)
             continue
