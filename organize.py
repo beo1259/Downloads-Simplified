@@ -12,9 +12,9 @@ def moveFile(file, parent_path):
     curPath = Path(file)
     file_stem = curPath.stem
 
-    file_ext = file[len(file) - len(''.join(path.split(file)) + file_stem):]
+    file_ext = curPath.suffix
 
-    attempt_insertion = join(parent_path, file_stem + file_ext)
+    attempt_insertion = join(parent_path, file_stem  + file_ext)
     print(attempt_insertion)
 
     if not exists(attempt_insertion):
@@ -43,7 +43,7 @@ while True:
     # if a file already exists a directory this gets appended so we dont have to overwrite it
 
     # default file path for downloads
-    downloads_path = 'E:\\Downloads'
+    downloads_path = str(Path.home() / "Downloads")
 
     # init the default paths for sorting and craete the folder if it does not exist
     audio_path = join(downloads_path, 'Audio')
