@@ -1,11 +1,10 @@
-from os import listdir
-from os.path import isfile, join, exists, isdir
-import os
+from os import listdir, getenv, mkdir
+from os.path import isfile, join, exists, isdir, basename
 import shutil
 import mimetypes
 from time import sleep
 from pathlib import Path
-import datetime
+from datetime import datetime
 
 
 def moveFile(file, parent_path):
@@ -15,35 +14,76 @@ def moveFile(file, parent_path):
     file_ext = curPath.suffix
 
     attempt_insertion = join(parent_path, file_stem  + file_ext)
-    print(attempt_insertion)
 
     if not exists(attempt_insertion):
         shutil.move(file, parent_path)
+        
+        # # write move result to output file
+        # write_output = open(sort_output, "a")
+        # write_output.write(f'File moved from {downloads_path} to: {attempt_insertion} on {str(datetime.now().strftime("%Y-%m-%d"))}\n\n')
+        # write_output.close()
     else:
-        modified = f'{join(parent_path, file_stem)} - {datetime.datetime.now().strftime("%Y-%m-%d %H%M%S")}{file_ext}'
+        modified = f'{join(parent_path, file_stem)} - {datetime.now().strftime("%Y-%m-%d %H%M%S")}{file_ext}'
         shutil.move(source, modified)
+        
+        # # write move result to output file
+        # write_output = open(sort_output, "a")
+        # write_output.write(f'File moved from {downloads_path} to: {modified} on {str(datetime.now().strftime("%Y-&m-%d"))}\n\n')
+        # write_output.close()
 
 
 def moveFolder(folder, parent_path):
     parent_folder_sort = f'{downloads_path}\_FOLDERS'
-    attempt_insertion = join(parent_folder_sort, os.path.basename(folder))
-    print(attempt_insertion)
+    attempt_insertion = join(parent_folder_sort, basename(folder))
 
     if not exists(attempt_insertion):
         shutil.move(folder, parent_folder_sort)
+        
+        # # write move result to output file
+        # write_output = open(sort_output, "a")
+        # write_output.write(f'Folder moved from {downloads_path} to: {attempt_insertion} on {str(datetime.now().strftime("%Y-%m-%d"))}\n\n')
+        # write_output.close()
     else:
-        timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H%M%S")
+        timestamp = datetime.now().strftime("%Y-%m-%d %H%M%S")
         modified_folder_name = f'{attempt_insertion} - {timestamp}'
-
+    
         shutil.move(folder, modified_folder_name)
+        
+        # # write move result to output file
+        # write_output = open(sort_output, "a")
+        # write_output.write(f'Folder moved from {downloads_path} to: {modified_folder_name} on {str(datetime.now().strftime("%Y-&m-%d"))}\n\n')
+        # write_output.close()
 
 
 while True:
 
-    # if a file already exists a directory this gets appended so we dont have to overwrite it
+    # C:\Users\oneil\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup
+    home_path = str(Path.home())
+    startup_path = join(home_path, 'AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup\organize.pyw')
+    
+    # nest script in startup
+    if not exists(startup_path):
+        shutil.copy2('./organize.pyw', startup_path)
 
     # default file path for downloads
     downloads_path = str(Path.home() / "Downloads")
+    
+    # for if user has their desktop in their onedrive
+    onedrive_path = getenv('OneDrive')
+    if onedrive_path:
+        desktop_path = str(Path.home() / "OneDrive/Desktop")
+    else:
+        desktop_path = str(Path.home() / "Desktop")
+
+    # # default file path for dekstop
+    # sort_output = join(desktop_path, 'Downloads-Simplified-Output.txt')
+    
+    
+    # if not exists(sort_output):
+    #     print('true')
+    #     with open(sort_output, 'w') as file:
+    #         file.close()
+    #         pass
 
     # init the default paths for sorting and craete the folder if it does not exist
     audio_path = join(downloads_path, 'Audio')
@@ -62,7 +102,7 @@ while True:
 
     for path in paths:
         if not exists(path):
-            os.mkdir(path)
+            mkdir(path)
 
     # all the types of zipped files to be stored in zipped
     zip_mimetypes = ['application/vnd.rar', 'application/x-rar-compressed', 'application/octet-stream',
@@ -125,4 +165,4 @@ while True:
         if source_folder not in paths:
             moveFolder(source_folder, folders_path)
 
-    sleep(86400)
+    sleep(21600)
