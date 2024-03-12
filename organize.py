@@ -95,10 +95,11 @@ while True:
     font_path = join(downloads_path, 'Fonts')
     pdf_path = join(downloads_path, 'Pdf')
     misc_path = join(downloads_path, 'Misc')
+    work_path = join(downloads_path, 'Work')
 
     folders_path = join(downloads_path, '_FOLDERS')
 
-    paths = [audio_path, video_path, image_path, zip_path, text_path, app_path, font_path, misc_path, pdf_path, folders_path]
+    paths = [audio_path, video_path, image_path, zip_path, text_path, app_path, font_path, misc_path, pdf_path, work_path, folders_path]
 
     for path in paths:
         if not exists(path):
@@ -108,6 +109,28 @@ while True:
     zip_mimetypes = ['application/vnd.rar', 'application/x-rar-compressed', 'application/octet-stream',
                 'application/zip', 'application/octet-stream', 'application/x-zip-compressed', 'multipart/x-zip',
                 'application/vnd.cncf.helm.chart.content.v1.tar+gzip']
+    
+    office_mimetypes = ['application/msword',
+                        'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+                        'application/vnd.openxmlformats-officedocument.wordprocessingml.template',
+                        'application/vnd.ms-word.document.macroEnabled.12',
+                        'application/vnd.ms-word.template.macroEnabled.12',
+                        'application/vnd.ms-excel',
+                        'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+                        'application/vnd.openxmlformats-officedocument.spreadsheetml.template',
+                        'application/vnd.ms-excel.sheet.macroEnabled.12',
+                        'application/vnd.ms-excel.template.macroEnabled.12',
+                        'application/vnd.ms-excel.addin.macroEnabled.12',
+                        'application/vnd.ms-excel.sheet.binary.macroEnabled.12',
+                        'application/vnd.ms-powerpoint',
+                        'application/vnd.openxmlformats-officedocument.presentationml.presentation',
+                        'application/vnd.openxmlformats-officedocument.presentationml.template',
+                        'application/vnd.openxmlformats-officedocument.presentationml.slideshow',
+                        'application/vnd.ms-powerpoint.addin.macroEnabled.12',
+                        'application/vnd.ms-powerpoint.presentation.macroEnabled.12',
+                        'application/vnd.ms-powerpoint.template.macroEnabled.12',
+                        'application/vnd.ms-powerpoint.slideshow.macroEnabled.12'
+                        ]
 
     # get each file in downloads
     files = [f for f in listdir(downloads_path) if isfile(join(downloads_path, f))]
@@ -119,7 +142,12 @@ while True:
 
         file_type = mimetypes.guess_type(file)[0] # get the mime type of the current file
 
-        if file_type and (file_type == 'application/pdf' or file_type == 'application/x-pdf'):
+        # moving each file to its corrcet directory
+        if file_type and file_type in office_mimetypes:
+            moveFile(source, work_path)
+            continue
+        
+        elif file_type and (file_type == 'application/pdf' or file_type == 'application/x-pdf'):
             moveFile(source, pdf_path)
             continue
 
