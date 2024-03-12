@@ -6,7 +6,34 @@ from time import sleep
 from pathlib import Path
 from datetime import datetime
 
+# to autoscan each organized folder and move any files that aren't where they should be 
+# (this would occur if the user places something in the wrong folder manually)
+def autoScan(folder, mimetype):
+    files = [f for f in listdir(folder) if isfile(join(folder, f))]
+    
+    # need this to be a tuple so that it checks every element in the mimetypes lists
+    mimetype = tuple(mimetype)
+    
+    for file in files:
+        source = join(folder, file) # set the source as the current file in the given organized directory
 
+        file_type = mimetypes.guess_type(file)[0] # get the mime type of the current file 
+        
+        # finds files that are not in the directory that their folder is supposed to hold
+        if file_type and not file_type.startswith(mimetype):
+            for mtypekey, mtypevalue in paths_and_their_mimetypes.items():
+                # go if not a list of mimetypes (zips, office)
+                if not isinstance(mtypevalue, list) and file_type.startswith(mtypevalue):
+                    moveFile(source, join(mtypekey, file))
+                    break
+                    # for all the folders that are asisgned multiple mimetypes (are lists)
+                elif isinstance(mtypevalue, list) and file_type.startswith(tuple(mtypevalue)):
+                    if mimetype in mtypevalue:
+                        moveFile(source, join(mtypekey, file))
+                    break
+        continue
+    
+# to move a file from downloads to its organized directory
 def moveFile(file, parent_path):
     curPath = Path(file)
     file_stem = curPath.stem
@@ -22,7 +49,7 @@ def moveFile(file, parent_path):
         modified = f'{join(parent_path, file_stem)} - {datetime.now().strftime("%Y-%m-%d %H%M%S")}{file_ext}'
         shutil.move(source, modified)
 
-
+# to move a folder from downloads to its organized directory
 def moveFolder(folder, parent_path):
     parent_folder_sort = f'{downloads_path}\_FOLDERS'
     attempt_insertion = join(parent_folder_sort, basename(folder))
@@ -36,23 +63,14 @@ def moveFolder(folder, parent_path):
     
         shutil.move(folder, modified_folder_name)
 
-def get_size(start_path):
-    total_size = 0
-    for dirpath, dirnames, filenames in walk(start_path):
-        for f in filenames:
-            fp = join(dirpath, f)
-            # skip if it is symbolic link
-            if not islink(fp):
-                total_size += getsize(fp)
-
-    return total_size
-
 while True:
 
     #**************************************************************************************************************************
-    # *********UNCOMMENT NEXT 6 LINES (UP TO AND INCLUDING: 'shutil.copy2('./Downloads Simplified.exe', startup_path)') FOR CREATING EXE
+    # *********UNCOMMENT NEXT 7 LINES (UP TO AND INCLUDING: 'shutil.copy2('./Downloads Simplified.exe', startup_path)') FOR CREATING EXE
+    # # nesting itself in startup directory
     # home_path = str(Path.home())
-    # startup_path = join(home_path, 'AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup\Downloads Simplified.exe')
+    # default_startup = 'AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup\Downloads Simplified.exe'
+    # startup_path = join(home_path, default_startup)
     
     # # nest script in startup
     # if not exists(startup_path):
@@ -74,17 +92,12 @@ while True:
 
     folders_path = join(downloads_path, '_FOLDERS')
 
-    paths = [audio_path, video_path, image_path, zip_path, text_path, app_path, misc_path, pdf_path, work_path, folders_path]
-
-    for path in paths:
-        if not exists(path):
-            mkdir(path)
-
     # all the types of zipped files to be stored in zipped
     zip_mimetypes = ['application/vnd.rar', 'application/x-rar-compressed', 'application/octet-stream',
                 'application/zip', 'application/octet-stream', 'application/x-zip-compressed', 'multipart/x-zip',
                 'application/vnd.cncf.helm.chart.content.v1.tar+gzip']
     
+    # all the mimetypes of office folders
     office_mimetypes = ['application/msword',
                         'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
                         'application/vnd.openxmlformats-officedocument.wordprocessingml.template',
@@ -107,6 +120,33 @@ while True:
                         'application/vnd.ms-powerpoint.slideshow.macroEnabled.12'
                         ]
 
+    paths = [audio_path, video_path, image_path, zip_path, text_path, app_path, misc_path, pdf_path, work_path, folders_path]
+    
+    paths_and_their_mimetypes = {
+        audio_path:'audio',
+        video_path:'video',
+        image_path:'image',
+        zip_path:zip_mimetypes,
+        text_path:'text',
+        pdf_path:['application/pdf', 'application/x-pdf'],
+        app_path:'application',
+        work_path:office_mimetypes,
+    }
+
+    for path in paths:
+        if not exists(path):
+            mkdir(path)
+
+    # first go through each folder and check that they are organized
+    for pathkey, pathval in paths_and_their_mimetypes.items():
+        if not isinstance(pathval, list):
+            typeArr = []
+            typeArr.append(pathval)
+            autoScan(pathkey, typeArr)
+        else:
+            autoScan(pathkey, pathval)
+        
+
     # get each file in downloads
     files = [f for f in listdir(downloads_path) if isfile(join(downloads_path, f))]
 
@@ -118,6 +158,7 @@ while True:
         file_type = mimetypes.guess_type(file)[0] # get the mime type of the current file
 
         if file_type and file_type in office_mimetypes:
+            autoScan(work_path, office_mimetypes)
             moveFile(source, work_path)
             continue
         
@@ -131,6 +172,7 @@ while True:
 
         elif file_type and file_type.startswith('audio'):
             moveFile(source, audio_path)
+            autoScan(audio_path, ['audio'])
             continue
 
         elif file_type and file_type.startswith('image'):
