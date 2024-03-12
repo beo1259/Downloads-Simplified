@@ -28,7 +28,7 @@ Execute this folder to begin sorting your downloads. Be sure to check the next s
 
 # How are your files organized?
 
-##### The program sorts your downloads into 10 different folders:
+### The program sorts your downloads into 10 different folders:
 
 **_FOLDERS**: Windows File Folder Types. 
 
