@@ -116,7 +116,7 @@ def sortDrives(drive):
 
 # main loop
 while True:
-
+    print('yuh')
     #**************************************************************************************************************************
     # *********UNCOMMENT NEXT 7 LINES (UP TO AND INCLUDING: 'shutil.copy2('./Downloads Simplified.exe', startup_path)') FOR CREATING EXE
     # nesting itself in startup directory
