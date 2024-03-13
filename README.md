@@ -8,7 +8,7 @@ This program sorts your downloads directory on **Windows** into easily managable
 
  1. Clone this repository or download it as a zip.
  2. If you downloaded it as a zip, the __'Downloads Simplified'__ folder that you've downloaded from github ***out of your Downloads***.
- 3. Open this folder, and observe that there are two .exe files. 
+ 3. Unzip this folder and open it, observe that there are two .exe files. 
     - If you **want your downloads to be automatically sorted on startup**:
         - Right click **DownloadsSimplified.exe**, and then **Run As Administrator**
     - If you **DONT want your downloads to be automatically sorted on startup**:
