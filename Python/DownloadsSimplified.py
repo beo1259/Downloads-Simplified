@@ -68,7 +68,6 @@ def moveFolder(folder, parent_path):
         shutil.move(folder, modified_folder_name)
 
 def getDownloadsDirectory():
-    """Returns the default downloads path for Linux, macOS, and Windows."""
     if platform.system() == 'Windows':
         import winreg
         sub_key = r'SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Shell Folders'
@@ -77,10 +76,10 @@ def getDownloadsDirectory():
             location = winreg.QueryValueEx(key, downloads_guid)[0]
             os.environ["DOWNLOADS_PATH"] = location
         return location
-    elif platform.system() == 'Darwin':
-        return os.path.join(os.path.expanduser('~'), 'Downloads')
+    # macos and linux
     else:
         return os.path.join(os.path.expanduser('~'), 'Downloads')
+
 
 # sort drives from largest to smallest (size)
 def sortDrives(drive):
@@ -106,14 +105,15 @@ def sortDrives(drive):
 # main loop
 while True:
 
-    # get default home path and startup
-    home_path = str(Path.home())
-    default_startup = 'AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup\DownloadsSimplified.exe'
-    startup_path = join(home_path, default_startup)
-    
+    # get default home path and startup to make script run on startup
+    program_name = 'DownloadsSimplified.py'
+    appdata_path = os.getenv('APPDATA')
+    default_startup = join(appdata_path, 'Microsoft', 'Windows', 'Start Menu', 'Programs', 'Startup')
+    startup_with_program = join(default_startup, program_name)
+                
     # nest script in startup
-    if not exists(startup_path):
-        shutil.copy2('./DownloadsSimplified.exe', startup_path)
+    if not exists(startup_with_program):
+        shutil.copy2(program_name, default_startup)
 
     # if we have already created the environment variable in the user's system, simply set downloads_path to that directory, otherwise find the directory
     if "DOWNLOADS_PATH" in os.environ:
@@ -121,8 +121,6 @@ while True:
     else:
         downloads_path = getDownloadsDirectory()
         
-    print(downloads_path)
-
     # init the default paths for sorting and craete the folder if it does not exist
     audio_path = join(downloads_path, 'Audio')
     video_path = join(downloads_path, 'Video')
