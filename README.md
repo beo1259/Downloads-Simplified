@@ -72,7 +72,8 @@ __Now your downloads are organized!__
     - If you are interested in having this program sorting your downloads as soon as a new one is added, contact me and I can send you a modfied program. However, as mentioned above this *will slightly reduce your computer's overall performance*.
 <p></p>
 
-- **This does not work for Linux or MacOS, I am working on implementing support for each**
+- **This does not work for Linux or MacOS, and likely will never.**
+  
 # How To STOP Sorting Your Downloads
 To stop sorting your downloads, open task manager and end the two 'DownloadsSimplified' tasks. 
 Additionally, if you ran the deafult exe it will be in your startup folder. To remove it do: **Win + R, then type 'shell:startup', then just delete the .exe**
