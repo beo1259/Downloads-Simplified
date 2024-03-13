@@ -104,6 +104,18 @@ def sortDrives(drive):
 
 # main loop
 while True:
+    # user cannot run both at same time
+    os.system('taskkill /f /im DownloadsSimplified.exe')
+    
+    # get startup path to remove the program from startup
+    program_name = 'DownloadsSimplified.exe'
+    appdata_path = os.getenv('APPDATA')
+    default_startup = join(appdata_path, 'Microsoft', 'Windows', 'Start Menu', 'Programs', 'Startup')
+    startup_with_program = join(default_startup, program_name)
+
+    if exists(startup_with_program):
+        os.remove(startup_with_program)
+    
     # if we have already created the environment variable in the user's system, simply set downloads_path to that directory, otherwise find the directory
     if "DOWNLOADS_PATH" in os.environ:
         downloads_path = str(os.environ.get("DOWNLOADS_PATH"))

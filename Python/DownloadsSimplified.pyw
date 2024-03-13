@@ -105,6 +105,8 @@ def sortDrives(drive):
 
 # main loop
 while True:
+    # user cannot run both at same time
+    os.system('taskkill /f /im DownloadsSimplified-nostartup.exe')
 
     # get default home path and startup
     home_path = str(Path.home())

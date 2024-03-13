@@ -80,6 +80,7 @@ paths = [audio_path, video_path, image_path, zip_path, text_path, app_path, misc
 
 # kill the task
 os.system('taskkill /f /im DownloadsSimplified.exe')
+os.system('taskkill /f /im DownloadsSimplified-nostartup.exe')
 
 # get startup path to remove the program from startup
 program_name = 'DownloadsSimplified.exe'

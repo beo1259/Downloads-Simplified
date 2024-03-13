@@ -102,7 +102,9 @@ def sortDrives(drive):
 
 # main loop
 while True:
-
+    # user cannot run both at same time
+    os.system('taskkill /f /im DownloadsSimplified-nostartup.exe')
+    
     # get default home path and startup to make script run on startup
     program_name = 'DownloadsSimplified.py'
     appdata_path = os.getenv('APPDATA')
