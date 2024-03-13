@@ -75,7 +75,7 @@ __Now your downloads are organized!__
 
 - It automatically checks your downloads folder for new files every 6 hours while your computer is on. If you don't see your downloads sorted immediately after a new download, this is why *(this improves the performance of your computer as it is not checking every second).*
     - If you are interested in having this program sorting your downloads as soon as a new one is added, contact me and I can send you a modfied program. However, as mentioned above this *will slightly reduce your computer's overall performance*.
-<br>
+
 - If you have python installed and want to run it through there, or want to try modifying the script to your liking and then running your own version, Go into the **Python** folder and start coding!
 
 - **This does not work for Linux or MacOS, and likely will never.**
