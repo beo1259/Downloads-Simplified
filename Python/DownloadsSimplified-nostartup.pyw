@@ -106,15 +106,6 @@ def sortDrives(drive):
 # main loop
 while True:
 
-    # get default home path and startup
-    home_path = str(Path.home())
-    default_startup = 'AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup\DownloadsSimplified.exe'
-    startup_path = join(home_path, default_startup)
-    
-    # nest script in startup
-    if not exists(startup_path):
-        shutil.copy2('./DownloadsSimplified.exe', startup_path)
-
     # if we have already created the environment variable in the user's system, simply set downloads_path to that directory, otherwise find the directory
     if "DOWNLOADS_PATH" in os.environ:
         downloads_path = str(os.environ.get("DOWNLOADS_PATH"))

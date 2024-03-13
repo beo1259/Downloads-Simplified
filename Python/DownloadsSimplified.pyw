@@ -106,9 +106,7 @@ def sortDrives(drive):
 # main loop
 while True:
 
-    #**************************************************************************************************************************
-    # *********UNCOMMENT NEXT 7 LINES (UP TO AND INCLUDING: 'shutil.copy2('./Downloads Simplified.exe', startup_path)') FOR CREATING EXE
-    # nesting itself in startup directory
+    # get default home path and startup
     home_path = str(Path.home())
     default_startup = 'AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup\DownloadsSimplified.exe'
     startup_path = join(home_path, default_startup)
