@@ -7,8 +7,6 @@ import mimetypes
 from time import sleep
 from pathlib import Path
 from datetime import datetime
-import string
-import winreg
 
 # to autoscan each organized folder and move any files that aren't where they should be 
 # (this would occur if the user places something in the wrong folder manually)
