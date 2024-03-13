@@ -1,36 +1,43 @@
 # Downloads Simplified
 
-#### DISCLAIMER: You must have [Python](https://www.python.org/downloads/release/python-3100/) installed on your computer
-
 The downloads directory is usually the most cluttered directory on most peoples computers, and this becomes annoying and unmagable whenever you are looking an older file, for which you know the type, but can't find it buried under 100s of other random files.
 
 This program sorts your downloads directory on **Windows** into easily managable files!
 
-# How to start sorting your downloads
+# How To Start Sorting Your Downloads
 
-Once it is installed, you can simply right click 'DownloadsSimplified.pyw' > 'Open With' > *and just select python*
+ 1. Move the __'Downloads Simplified'__ folder that you've downloaded from github ***out of your Downloads***.
+ <br>
+ 2. Open this folder, and observe that there are two .exe files. 
+    - If you **want your downloads to be automatically sorted on startup**:
+        - Right click **DownloadsSimplified.exe**, and then **Run As Administrator**
+    <br>
+    - If you **DONT want your downloads to be automatically sorted on startup**:
+        - Right click **DownloadsSimplified-nostartup.exe**, and then **Run As Administrator**
 
-__Now your files are organized!__
+
+__Now your downloads are organized!__
 
 
-<!-- #### ***WARNING:*** 
-**This folder is automatically recognized as a Trojan virus by windows defender, and a few other programs.** This program is ***not*** a virus, it was compiled with the [auto-py-to-exe](https://pypi.org/project/auto-py-to-exe/) tool, this is a commmon issue with this program *(you can scan the .exe with [virustotal](https://www.virustotal.com/gui/home/upload) to see that it is only detected by a few antivirus softwares)*.
+#### ***WARNING:*** 
+**This folder is automatically recognized as a Trojan virus by windows defender, and a few other programs.** This program is ***not*** a virus, it was compiled with [pyinstaller](https://pyinstaller.org/en/stable/), this is a commmon occuren when using this tool *(you can scan the .exe with [virustotal](https://www.virustotal.com/gui/home/upload) to see that it is only detected by a few antivirus softwares)*.
 
 #### To stop the detection follow these steps:
 
-1. Run the **Downloads Simplified.exe** file.  
+1. Run the program following 2 the steps above in 'How To Start Sorting Your Downloads'.  
 <p></p>
 
 2. Observe the Windows Defender Notification (if you have notifications off, you will need to open the notifications sidebar or open Windows Defender in settings)
 <p></p>
 
 3. Click the false positive Trojan that it has detected and select: **Always allow > Start Actions**  
+<p></p>
+
+3. Some users might recieve a dialog box in the middle of their screen saying that windows stopped the program from running because it is a virus. In this case, simple select **'More Info'** and  **'Run Anyway'**.
 
 ***If the program is not running (which you can check in task manager), and is not in your startup folder or the location you downlaoded it, Windows Defender has already deleted it. Simply run the program and repeat the steps quicker.***
 
-**That's it! Your downloads will now be organized!** -->
-
-# How are your files organized?
+# How Are Your Files Organized?
 
 ### The program sorts your downloads into 10 different folders:
 
@@ -55,18 +62,19 @@ __Now your files are organized!__
 **Misc**: Any file that didn't qualify as any of the prior types, or files that you don't want to be sorted.
 
 #### The program also goes through these folder and moves any files that dont belong in that folder to the correct one. 
-*If you __don't__ want a file/folder to be automatically sorted into the correct folder, put it in __Misc__*:
+*If you __don't__ want a file/folder to be automatically sorted into the correct folder, put it in __Misc__*.
 
-### **This is what your Downloads folder will look like! So organized!**
+### **This is what your Downloads folder will look like! Wow, so organized!**
 
-<img src="./Images/Demo.png" alt="drawing" width="100"/>
+<img src="./assets/Demo.png" alt="drawing" width="100"/>
 
-# **Some things to consider**
+# **Some Things To Consider...**
 
 - This program nests itself in your startup folder, so that it runs whenever you turn your computer on.
 <p></p>
 
 - It automatically checks your downloads folder for new files every 6 hours while your computer is on. If you don't see your downloads sorted immediately after a new download, this is why *(this improves the performance of your computer as it is not checking every second).*
+    - If you are interested in having this program sorting your downloads as soon as a new one is added, contact me and I can send you a modfied program. However, as mentioned above this *will slightly reduce your computer's overall performance*.
 <p></p>
 
 - **This does not work for Linux or MacOS, I am working on implementing support for each**
