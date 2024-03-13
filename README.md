@@ -59,8 +59,7 @@ __Now your downloads are organized!__
 
 **Misc**: Any file that didn't qualify as any of the prior types, or files that you don't want to be sorted.
 
-#### The program also goes through these folder and moves any files that dont belong in that folder to the correct one. 
-*If you __don't__ want a file/folder to be automatically sorted into the correct folder, put it in __Misc__*.
+#### The program also goes through these folder and moves any files that dont belong in that folder to the correct one. *If you __don't__ want a file/folder to be automatically sorted into the correct folder, put it in __Misc__*.
 
 ### **This is what your Downloads folder will look like! Wow, so organized!**
 
