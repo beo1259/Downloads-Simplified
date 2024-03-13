@@ -23,16 +23,20 @@ __Now your downloads are organized!__
 
 #### To stop the detection follow these steps:
 
-1. Run the program following 2 the steps above in 'How To Start Sorting Your Downloads'.  
+1. Turn off Realtime Protetction in Windows Security > Virus and Threat Protection > Virus and Threat Protection Settings
 <p></p>
 
-2. Observe the Windows Defender Notification (if you have notifications off, you will need to open the notifications sidebar or open Windows Defender in settings)
+2. Run the program following 2 the steps above in 'How To Start Sorting Your Downloads'.  
 <p></p>
 
-3. Click the false positive Trojan that it has detected and select: **Always allow > Start Actions**  
+3. If you didn't turn off Realtime Protection, you will get a Windows Defender Notification (if you have notifications off, you will need to open the notifications sidebar or open Windows Defender in settings)
 <p></p>
 
-3. Some users might recieve a dialog box in the middle of their screen saying that windows stopped the program from running because it is a virus. In this case, simple select **'More Info'** and  **'Run Anyway'**.
+4. Click the false positive Trojan that it has detected and select: **Always allow > Start Actions**  
+<p></p>
+
+#### Note:
+ Some users might recieve 'Windows SmartScreen' dialog box in the middle of their screen saying that windows stopped the program from running because it is a virus. In this case, simple select **'More Info'** and  **'Run Anyway'**.
 
 ***If the program is not running (which you can check in task manager), and is not in your startup folder or the location you downlaoded it, Windows Defender has already deleted it. Simply run the program and repeat the steps quicker.***
 
