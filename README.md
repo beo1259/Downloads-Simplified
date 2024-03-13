@@ -66,16 +66,16 @@ __Now your downloads are organized!__
 
 <img src="./assets/Demo.png" alt="drawing" width="100"/>
 
-# **Some Things To Consider...**
-
-- This program nests itself in your startup folder, so that it runs whenever you turn your computer on.
-<p></p>
+# Some Things To Consider...
 
 - It automatically checks your downloads folder for new files every 6 hours while your computer is on. If you don't see your downloads sorted immediately after a new download, this is why *(this improves the performance of your computer as it is not checking every second).*
     - If you are interested in having this program sorting your downloads as soon as a new one is added, contact me and I can send you a modfied program. However, as mentioned above this *will slightly reduce your computer's overall performance*.
 <p></p>
 
 - **This does not work for Linux or MacOS, I am working on implementing support for each**
+# How To STOP Sorting Your Downloads
+To stop sorting your downloads, open task manager and end the two 'DownloadsSimplified' tasks. 
+Additionally, if you ran the deafult exe it will be in your startup folder. To remove it do: **Win + R, then type 'shell:startup', then just delete the .exe**
 
 # Contact me
 Do not hesitate to reach out to me with any questions or concerns at:
