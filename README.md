@@ -2,7 +2,7 @@
 
 The downloads directory is usually the most cluttered directory on most peoples computers, and this becomes annoying and unmagable whenever you are looking an older file, for which you know the type, but can't find it buried under 100s of other random files.
 
-This program sorts your downloads directory on **Windows** into easily managable files!
+This program sorts your downloads directory on **Windows** into easily managable folders!
 
 # How To Start Sorting Your Downloads
 
