@@ -8,7 +8,7 @@ This program sorts your downloads directory on **Windows** into easily managable
 
 # How to start sorting your downloads
 
-Once it is installed, you can simply right click 'organize.pyw' > 'Open With' > *and just select python*
+Once it is installed, you can simply right click 'DownloadsSimplified.pyw' > 'Open With' > *and just select python*
 
 __Now your files are organized!__
 

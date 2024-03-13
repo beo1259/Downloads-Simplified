@@ -1,6 +1,7 @@
 import os
 from os import listdir, getenv, mkdir, walk
 from os.path import isfile, join, exists, isdir, basename, islink, getsize
+import platform
 import shutil
 import mimetypes
 from time import sleep
@@ -66,32 +67,20 @@ def moveFolder(folder, parent_path):
     
         shutil.move(folder, modified_folder_name)
 
-
-# this is the deafult windows downloads direct
-def defaultDownloads():
-    return os.path.join(os.path.expanduser('~'), 'Downloads')
-
-# on windows we can get the downloads folder easily
-def getDownloadsFolderWindows():
-    key = winreg.OpenKey(winreg.HKEY_CURRENT_USER, r'SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders')
-    downloads_path, _ = winreg.QueryValueEx(key, '{374DE290-123F-4565-9164-39C4925E467B}')
-    downloads_path = os.path.expandvars(downloads_path)  # expand any environment variables
-    return downloads_path
-
-if os.name == 'nt':  # if running on Windows
-    downloads_path = getDownloadsFolderWindows()
-    os.environ["DOWNLOADS_PATH"] = downloads_path
-
-
-# if it isnt in the deafult directory and the user isn't on windows
-def findDownloads(drives):
-    for drive in drives:
-        for root, dirs, files in os.walk(drive, topdown=True): 
-            if 'Downloads' in dirs:
-                downloads_path = os.path.join(root, 'Downloads')
-                os.environ["DOWNLOADS_PATH"] = downloads_path
-                return downloads_path  
-    return None
+def getDownloadsDirectory():
+    """Returns the default downloads path for Linux, macOS, and Windows."""
+    if platform.system() == 'Windows':
+        import winreg
+        sub_key = r'SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Shell Folders'
+        downloads_guid = '{374DE290-123F-4565-9164-39C4925E467B}'
+        with winreg.OpenKey(winreg.HKEY_CURRENT_USER, sub_key) as key:
+            location = winreg.QueryValueEx(key, downloads_guid)[0]
+            os.environ["DOWNLOADS_PATH"] = location
+        return location
+    elif platform.system() == 'Darwin':
+        return os.path.join(os.path.expanduser('~'), 'Downloads')
+    else:
+        return os.path.join(os.path.expanduser('~'), 'Downloads')
 
 # sort drives from largest to smallest (size)
 def sortDrives(drive):
@@ -132,14 +121,9 @@ while True:
     if "DOWNLOADS_PATH" in os.environ:
         downloads_path = str(os.environ.get("DOWNLOADS_PATH"))
     else:
-        downloads_path = str(getDownloadsFolderWindows())
-        if os.path.exists(downloads_path):
-            os.environ["DOWNLOADSPATH"] = downloads_path
-        else:
-            # get drives and sort them from largest to smallest (typically the larger drive will contain downloads)
-            drive = string.ascii_uppercase
-            sorted_drives = sortDrives(drive)
-            findDownloads(sorted_drives)
+        downloads_path = getDownloadsDirectory()
+        
+    print(downloads_path)
 
     # init the default paths for sorting and craete the folder if it does not exist
     audio_path = join(downloads_path, 'Audio')
