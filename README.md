@@ -75,8 +75,8 @@ __Now your downloads are organized!__
 - **This does not work for Linux or MacOS, and likely will never.**
   
 # How To STOP Sorting Your Downloads
-To stop sorting your downloads, open task manager and end the two 'DownloadsSimplified' tasks. 
-Additionally, if you installed with the default exe 'DownloadsSimplified.exe' it will be nested in your startup folder. To remove it do: **Win + R, then type 'shell:startup', then just delete the .exe**
+1. Open task manager and end the two 'DownloadsSimplified' tasks. 
+2. If you installed with the default exe 'DownloadsSimplified.exe' it will be nested in your startup folder. To remove it do: **Win + R, then type 'shell:startup', then just delete the .exe**
 
 # Contact me
 Do not hesitate to reach out to me with any questions or concerns at:
