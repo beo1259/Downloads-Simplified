@@ -7,11 +7,9 @@ This program sorts your downloads directory on **Windows** into easily managable
 # How To Start Sorting Your Downloads
 
  1. Move the __'Downloads Simplified'__ folder that you've downloaded from github ***out of your Downloads***.
- <br>
  2. Open this folder, and observe that there are two .exe files. 
     - If you **want your downloads to be automatically sorted on startup**:
         - Right click **DownloadsSimplified.exe**, and then **Run As Administrator**
-    <br>
     - If you **DONT want your downloads to be automatically sorted on startup**:
         - Right click **DownloadsSimplified-nostartup.exe**, and then **Run As Administrator**
 
