@@ -18,7 +18,7 @@ __Now your downloads are organized!__
 
 
 #### ***WARNING:*** 
-**This folder is automatically recognized as a Trojan virus by windows defender, and a few other programs.** This program is ***not*** a virus, it was compiled with [pyinstaller](https://pyinstaller.org/en/stable/), this is a commmon occuren when using this tool *(you can scan the .exe with [virustotal](https://www.virustotal.com/gui/home/upload) to see that it is only detected by a few antivirus softwares)*.
+**This folder is automatically recognized as a Trojan virus by windows defender, and a few other programs.** This program is ***not*** a virus, it was compiled with [pyinstaller](https://pyinstaller.org/en/stable/), this is a common occurence when using this tool *(you can scan the .exe with [virustotal](https://www.virustotal.com/gui/home/upload) to see that it is only detected by a few antivirus softwares)*.
 
 #### To stop the detection follow these steps:
 
