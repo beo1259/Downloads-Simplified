@@ -63,7 +63,7 @@ def moveFile(file, parent_path):
 
 # to move a folder from downloads to its organized directory
 def moveFolder(folder, parent_path):
-    parent_folder_sort = f'{downloads_path}\_FOLDERS'
+    parent_folder_sort = fr'{downloads_path}\_FOLDERS'
     attempt_insertion = join(parent_folder_sort, basename(folder))
 
     if not exists(attempt_insertion):
