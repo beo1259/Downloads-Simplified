@@ -7,8 +7,16 @@ import mimetypes
 from time import sleep
 from pathlib import Path
 from datetime import datetime
-import string
-import winreg
+import subprocess
+
+def process_exists(process_name):
+    si = subprocess.STARTUPINFO()
+    si.dwFlags |= subprocess.STARTF_USESHOWWINDOW
+    progs = str(subprocess.check_output('tasklist', startupinfo=si))
+    if process_name in progs:
+        return True
+    else:
+        return False
 
 # to autoscan each organized folder and move any files that aren't where they should be 
 # (this would occur if the user places something in the wrong folder manually)
@@ -105,8 +113,14 @@ def sortDrives(drive):
 
 # main loop
 while True:
+    si = subprocess.STARTUPINFO()
+    si.dwFlags |= subprocess.STARTF_USESHOWWINDOW
+    
     # user cannot run both at same time
-    os.system('taskkill /f /im DownloadsSimplified.exe')
+    try:
+        subprocess.Popen(["taskkill", "/im", "DownloadsSimplified.exe", '/f'], startupinfo=si)
+    finally:
+        pass
     
     # get startup path to remove the program from startup
     program_name = 'DownloadsSimplified.exe'
@@ -123,8 +137,6 @@ while True:
     else:
         downloads_path = getDownloadsDirectory()
         
-    print(downloads_path)
-
     # init the default paths for sorting and craete the folder if it does not exist
     audio_path = join(downloads_path, 'Audio')
     video_path = join(downloads_path, 'Video')

@@ -7,8 +7,7 @@ import mimetypes
 from time import sleep
 from pathlib import Path
 from datetime import datetime
-import string
-import winreg
+import subprocess
 
 # to autoscan each organized folder and move any files that aren't where they should be 
 # (this would occur if the user places something in the wrong folder manually)
@@ -105,17 +104,24 @@ def sortDrives(drive):
 
 # main loop
 while True:
-    # user cannot run both at same time
-    os.system('taskkill /f /im DownloadsSimplified-nostartup.exe')
-
-    # get default home path and startup
-    home_path = str(Path.home())
-    default_startup = 'AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup\DownloadsSimplified.exe'
-    startup_path = join(home_path, default_startup)
+    si = subprocess.STARTUPINFO()
+    si.dwFlags |= subprocess.STARTF_USESHOWWINDOW
     
+    # user cannot run both at same time
+    try:
+        subprocess.Popen(["taskkill", "/im", "DownloadsSimplified-nostartup.exe", '/f'], startupinfo=si)
+    finally:
+        pass
+    
+    # get startup path to remove the program from startup
+    program_name = 'DownloadsSimplified.exe'
+    appdata_path = os.getenv('APPDATA')
+    default_startup = join(appdata_path, 'Microsoft', 'Windows', 'Start Menu', 'Programs', 'Startup')
+    startup_with_program = join(default_startup, program_name)
+
     # nest script in startup
-    if not exists(startup_path):
-        shutil.copy2('./DownloadsSimplified.exe', startup_path)
+    if not exists(startup_with_program):
+        shutil.copy2('./DownloadsSimplified.exe', startup_with_program)
 
     # if we have already created the environment variable in the user's system, simply set downloads_path to that directory, otherwise find the directory
     if "DOWNLOADS_PATH" in os.environ:
@@ -123,8 +129,6 @@ while True:
     else:
         downloads_path = getDownloadsDirectory()
         
-    print(downloads_path)
-
     # init the default paths for sorting and craete the folder if it does not exist
     audio_path = join(downloads_path, 'Audio')
     video_path = join(downloads_path, 'Video')

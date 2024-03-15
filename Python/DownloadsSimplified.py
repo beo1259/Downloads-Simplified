@@ -7,6 +7,7 @@ import mimetypes
 from time import sleep
 from pathlib import Path
 from datetime import datetime
+import subprocess
 
 # to autoscan each organized folder and move any files that aren't where they should be 
 # (this would occur if the user places something in the wrong folder manually)
@@ -66,6 +67,7 @@ def moveFolder(folder, parent_path):
         shutil.move(folder, modified_folder_name)
 
 def getDownloadsDirectory():
+    """Returns the default downloads path for Linux, macOS, and Windows."""
     if platform.system() == 'Windows':
         import winreg
         sub_key = r'SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Shell Folders'
@@ -74,10 +76,10 @@ def getDownloadsDirectory():
             location = winreg.QueryValueEx(key, downloads_guid)[0]
             os.environ["DOWNLOADS_PATH"] = location
         return location
-    # macos and linux
+    elif platform.system() == 'Darwin':
+        return os.path.join(os.path.expanduser('~'), 'Downloads')
     else:
         return os.path.join(os.path.expanduser('~'), 'Downloads')
-
 
 # sort drives from largest to smallest (size)
 def sortDrives(drive):
@@ -102,18 +104,24 @@ def sortDrives(drive):
 
 # main loop
 while True:
-    # user cannot run both at same time
-    os.system('taskkill /f /im DownloadsSimplified-nostartup.exe')
+    si = subprocess.STARTUPINFO()
+    si.dwFlags |= subprocess.STARTF_USESHOWWINDOW
     
-    # get default home path and startup to make script run on startup
-    program_name = 'DownloadsSimplified.py'
+    # user cannot run both at same time
+    try:
+        subprocess.Popen(["taskkill", "/im", "DownloadsSimplified-nostartup.exe", '/f'], startupinfo=si)
+    finally:
+        pass
+    
+    # get startup path to remove the program from startup
+    program_name = 'DownloadsSimplified.exe'
     appdata_path = os.getenv('APPDATA')
     default_startup = join(appdata_path, 'Microsoft', 'Windows', 'Start Menu', 'Programs', 'Startup')
     startup_with_program = join(default_startup, program_name)
-                
+
     # nest script in startup
     if not exists(startup_with_program):
-        shutil.copy2(program_name, default_startup)
+        shutil.copy2('./DownloadsSimplified.exe', startup_with_program)
 
     # if we have already created the environment variable in the user's system, simply set downloads_path to that directory, otherwise find the directory
     if "DOWNLOADS_PATH" in os.environ:

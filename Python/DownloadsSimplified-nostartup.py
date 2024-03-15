@@ -7,8 +7,16 @@ import mimetypes
 from time import sleep
 from pathlib import Path
 from datetime import datetime
-import string
-import winreg
+import subprocess
+
+def process_exists(process_name):
+    si = subprocess.STARTUPINFO()
+    si.dwFlags |= subprocess.STARTF_USESHOWWINDOW
+    progs = str(subprocess.check_output('tasklist', startupinfo=si))
+    if process_name in progs:
+        return True
+    else:
+        return False
 
 # to autoscan each organized folder and move any files that aren't where they should be 
 # (this would occur if the user places something in the wrong folder manually)
@@ -68,6 +76,7 @@ def moveFolder(folder, parent_path):
         shutil.move(folder, modified_folder_name)
 
 def getDownloadsDirectory():
+    """Returns the default downloads path for Linux, macOS, and Windows."""
     if platform.system() == 'Windows':
         import winreg
         sub_key = r'SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Shell Folders'
@@ -76,10 +85,10 @@ def getDownloadsDirectory():
             location = winreg.QueryValueEx(key, downloads_guid)[0]
             os.environ["DOWNLOADS_PATH"] = location
         return location
-    # macos and linux
+    elif platform.system() == 'Darwin':
+        return os.path.join(os.path.expanduser('~'), 'Downloads')
     else:
         return os.path.join(os.path.expanduser('~'), 'Downloads')
-
 
 # sort drives from largest to smallest (size)
 def sortDrives(drive):
@@ -104,8 +113,14 @@ def sortDrives(drive):
 
 # main loop
 while True:
+    si = subprocess.STARTUPINFO()
+    si.dwFlags |= subprocess.STARTF_USESHOWWINDOW
+    
     # user cannot run both at same time
-    os.system('taskkill /f /im DownloadsSimplified.exe')
+    try:
+        subprocess.Popen(["taskkill", "/im", "DownloadsSimplified.exe", '/f'], startupinfo=si)
+    finally:
+        pass
     
     # get startup path to remove the program from startup
     program_name = 'DownloadsSimplified.exe'
@@ -115,7 +130,7 @@ while True:
 
     if exists(startup_with_program):
         os.remove(startup_with_program)
-    
+
     # if we have already created the environment variable in the user's system, simply set downloads_path to that directory, otherwise find the directory
     if "DOWNLOADS_PATH" in os.environ:
         downloads_path = str(os.environ.get("DOWNLOADS_PATH"))
@@ -251,4 +266,4 @@ while True:
         if source_folder not in paths:
             moveFolder(source_folder, folders_path)
 
-    sleep(3600) # check to sort again 1 hours from now
+    sleep(21600) # check to sort again 6 hours from now

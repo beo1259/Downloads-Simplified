@@ -8,6 +8,16 @@ from time import sleep
 from pathlib import Path
 from datetime import datetime
 from subprocess import check_output
+import subprocess
+
+def process_exists(process_name):
+    si = subprocess.STARTUPINFO()
+    si.dwFlags |= subprocess.STARTF_USESHOWWINDOW
+    progs = str(subprocess.check_output('tasklist', startupinfo=si))
+    if process_name in progs:
+        return True
+    else:
+        return False
 
 # to move a file from downloads to its organized directory
 def moveFile(file, parent_path):
@@ -78,9 +88,17 @@ folders_path = join(downloads_path, '_FOLDERS')
 # paths for each organized folder
 paths = [audio_path, video_path, image_path, zip_path, text_path, app_path, misc_path, pdf_path, work_path, folders_path]
 
-# kill the task
-os.system('taskkill /f /im DownloadsSimplified.exe')
-os.system('taskkill /f /im DownloadsSimplified-nostartup.exe')
+si = subprocess.STARTUPINFO()
+si.dwFlags |= subprocess.STARTF_USESHOWWINDOW
+
+try:
+    subprocess.Popen(["taskkill", "/im", "DownloadsSimplified.exe", '/f'], startupinfo=si)
+finally:
+        pass
+try:
+    subprocess.Popen(["taskkill", "/im", "DownloadsSimplified-nostartup.exe", '/f'], startupinfo=si)
+finally:
+        pass
 
 # get startup path to remove the program from startup
 program_name = 'DownloadsSimplified.exe'
